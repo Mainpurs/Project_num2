@@ -9,6 +9,8 @@ markup = ReplyKeyboardMarkup(resize_keyboard=True)
 markup.add(KeyboardButton('1'))
 markup.add(KeyboardButton('2'))
 
+msg = None
+
 
 filename = "user_data.json"
 
@@ -35,7 +37,7 @@ def welcome(message):
     data = load_data()
     if str(user_id) not in data:
         data[str(user_id)] = {}
-    data[str(user_id)] = {'loc1': '', 'loc2': '', 'loc3': '', 'final': ''}
+    data[str(user_id)] = {'story1_loc1': '', 'story1_loc2': '', 'story1_loc3': '', 'story1_loc4': '', 'story1_final': '', 'story2_loc1': '', 'story2_loc2': '', 'story2_loc3': '', 'story2_loc4': '', 'story2_final': ''}
     save_data(data)
     bot.register_next_step_handler(msg, loc1)
 
@@ -45,6 +47,7 @@ def loc1(message):
     msg = bot.send_message(message.chat.id, 'Ты у себя на базе, но пора продумывать план на миллион! Куда пойдешь?\n '
                                             '1)В опасную зону под названием - Радиус.\n 2)В интересную зону - СССР!',
                            reply_markup=markup)
+
     data = load_data()
     data[str(user_id)]["loc1"] = message.text
     save_data(data)
@@ -54,6 +57,10 @@ def loc1(message):
 def loc2(message):
     user_id = message.chat.id
     data = load_data()
+    data[str(user_id)]["loc1"] = message.text
+    save_data(data)
+    msg = None  # Initialize msg with a default value
+
     if data[str(user_id)]["loc1"] == '1':
         msg = bot.send_message(message.chat.id,
                                'Кажись ты забрёл в минное поле из аномалий!\n '
@@ -64,17 +71,51 @@ def loc2(message):
                                'Тебе нужно искать артефакты. Перед тобой 2 здания.\n '
                                '1)Пойти в общaгу.\n 2)Пойти в лечебницу.',
                                reply_markup=markup)
-    data[str(user_id)]["loc2"] = message.text
+
+    data[str(user_id)]["loc1"] = message.text
     save_data(data)
     bot.register_next_step_handler(msg, loc3)
 
 
 def loc3(message):
     user_id = message.chat.id
-    msg = bot.send_message(message.chat.id, 'Ты у себя на базе, но пора продумывать план на миллион! Куда пойдешь?\n '
-                                            '1)В опасную зону под названием - Радиус.\n 2)В интересную зону - СССР!',
-                           reply_markup=markup)
     data = load_data()
+    data[str(user_id)]["loc2"] = message.text
+    save_data(data)
+    msg = None
+
+    if data[str(user_id)]["loc2"] == '1':
+        msg = bot.send_message(message.chat.id,
+                               'Вот блин... Ты споткнулся! кажется пластерем не обойтись\n '
+                               '1)Позвонить в службу спасения.\n 2)Держась обеями руками идти из Радиуса.',
+                               reply_markup=markup)
+    elif data[str(user_id)]["loc2"] == '2':
+        msg = bot.send_message(message.chat.id,
+                               '\n '
+                               '1)Пойти в общaгу.\n 2)Пойти в лечебницу.',
+                               reply_markup=markup)
+    data[str(user_id)]["loc2"] = message.text
+    save_data(data)
+    bot.register_next_step_handler(msg, loc4)
+
+
+def loc4(message):
+    user_id = message.chat.id
+    data = load_data()
+    data[str(user_id)]["loc3"] = message.text
+    save_data(data)
+    msg = None
+
+    if data[str(user_id)]["loc3"] == '1':
+        msg = bot.send_message(message.chat.id,
+                               'Кажись ты забрёл в минное поле из аномалий!\n '
+                               '1)Бежать напролом!\n 2)Сверяться с картой аномалий и идти потихоньку.',
+                               reply_markup=markup)
+    elif data[str(user_id)]["loc3"] == '2':
+        msg = bot.send_message(message.chat.id,
+                               'Тебе нужно искать артефакты. Перед тобой 2 здания.\n '
+                               '1)Пойти в общaгу.\n 2)Пойти в лечебницу.',
+                               reply_markup=markup)
     data[str(user_id)]["loc3"] = message.text
     save_data(data)
     bot.register_next_step_handler(msg, final)
@@ -82,13 +123,23 @@ def loc3(message):
 
 def final(message):
     user_id = message.chat.id
-    msg = bot.send_message(message.chat.id, 'Ты у себя на базе, но пора продумывать план на миллион! Куда пойдешь?\n '
-                                            '1)В опасную зону под названием - Радиус.\n 2)В интересную зону - СССР!',
-                           reply_markup=markup)
     data = load_data()
     data[str(user_id)]["final"] = message.text
     save_data(data)
-    bot.register_next_step_handler(msg, loc1)
+    msg = None
+
+    if data[str(user_id)]["loc3"] == '1':
+        msg = bot.send_message(message.chat.id,
+                               'Кажись ты забрёл в минное поле из аномалий!\n '
+                               '1)Бежать напролом!\n 2)Сверяться с картой аномалий и идти потихоньку.',
+                               reply_markup=markup)
+    elif data[str(user_id)]["loc3"] == '2':
+        msg = bot.send_message(message.chat.id,
+                               'Тебе нужно искать артефакты. Перед тобой 2 здания.\n '
+                               '1)Пойти в общaгу.\n 2)Пойти в лечебницу.',
+                               reply_markup=markup)
+    data[str(user_id)]["loc4"] = message.text
+    save_data(data)
 
 
 if __name__ == "__main__":
