@@ -3,7 +3,7 @@ import telebot
 from telebot.types import ReplyKeyboardMarkup, KeyboardButton
 import random as r
 
-TOKEN = "6907816424:AAFtptMbHmk8FH4w39qBW7Zy1533IKPiPEM"
+TOKEN = ""
 bot = telebot.TeleBot(TOKEN)
 
 markup = ReplyKeyboardMarkup(resize_keyboard=True)
