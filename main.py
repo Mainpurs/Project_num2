@@ -291,5 +291,4 @@ def final(message):
         data[str(user_id)]["x"] = message.text
     save_data(data)
 
-
 bot.infinity_polling()
