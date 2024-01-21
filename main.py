@@ -3,7 +3,7 @@ import telebot
 from telebot.types import ReplyKeyboardMarkup, KeyboardButton
 import random as r
 
-TOKEN = ""
+TOKEN = "6907816424:AAFtptMbHmk8FH4w39qBW7Zy1533IKPiPEM"
 bot = telebot.TeleBot(TOKEN)
 
 markup = ReplyKeyboardMarkup(resize_keyboard=True)
@@ -161,7 +161,7 @@ def loc3(message):
         elif data[str(user_id)]["loc1"] == '2':
             if data[str(user_id)]["loc2"] == '1':
                 msg = bot.send_message(user_id,
-                                       'Наступил вечер, никто так и не пришел. Кроме тех волков\nТы проиграл "страх"')
+                                       'Наступил вечер, никто так и не пришел. Кроме тех волков\nТы проиграл "запах страха"')
             else:
                 x = r.randint(1, 2)
                 if x == 1:
@@ -232,7 +232,7 @@ def loc4(message):
 
                 elif data[str(user_id)]["loc3"] == '2':
                     msg = bot.send_message(user_id,
-                                           'Глубокой ночью ты подходишь к базе, и тут "башня"!\nКрикнуть в ответ:\n '
+                                           'Глубокой ночью ты подходишь к базе, и тут "башня"! Но ты забыл ответ\nКрикнуть в ответ:\n '
                                            '1)"Молния"\n 2)"Самолёт"',
                                            reply_markup=markup)
 
@@ -261,10 +261,8 @@ def loc4(message):
                                        reply_markup=markup)
             elif data[str(user_id)]["loc3"] == '4':
                 msg = bot.send_message(user_id,
-                                       'Ты наткнулся на дом. Замученный дорогой ты выбился из сил, и в доме '
-                                       'лесника ночлега попросил.\n '
-                                       '1)Попросить остаться переждать дождь\n 2)Спросить направление и отправиться к '
-                                       'базе',
+                                       'Из за перчаток, у тебя соскальзнула рука и ты сорвался, но успел заметить домик.\n '
+                                       '1)Идти К домику\n 2)Идти ОТ домика',
                                        reply_markup=markup)
 
     bot.register_next_step_handler(msg, final)
@@ -290,5 +288,41 @@ def final(message):
     else:
         data[str(user_id)]["x"] = message.text
     save_data(data)
+
+    if data[str(user_id)]["choice"] == '1':
+        if data[str(user_id)]["loc1"] == '2':
+            if data[str(user_id)]["loc2"] == '2':
+                if data[str(user_id)]["loc3"] == '1':
+                    if data[str(user_id)]["loc4"] == '1':
+                        msg = bot.send_message(user_id,
+                                               'Ты толкаешь, и тут ВЗРЫВ. Тебя тоже задело.\nТы проиграл "карма" ')
+
+                    if data[str(user_id)]["loc4"] == '2':
+                        x = r.randint(1, 2)
+                        if x == 1:
+                            msg = bot.send_message(user_id,
+                                           'Ты прыгаешь и задеваешь аномалию...   ВЗРЫВ.\nТы проиграл "друг" ')
+                        else:
+                            msg = bot.send_message(user_id,
+                                                   'Ты прыгаешь и он прыгает за тобой, задевая аномалию и тут ВЗРЫВ. Тебя тоже задело.\nТы проиграл "товарищ" ')
+
+                elif data[str(user_id)]["loc3"] == '2':
+                    if data[str(user_id)]["loc4"] == '1':
+                        msg = bot.send_message(user_id,
+                                               'Ты заходишь на базу уже ночью. На утро тебе приходит письмо, о неуплате, и тебя выселяют.\nТы выжил "жизнь" ')
+                    elif data[str(user_id)]["loc4"] == '2':
+                        msg = bot.send_message(user_id,
+                                               'Тебя расстреливают на месте.\nТы проиграл "друзья!"')
+
+
+    if data[str(user_id)]["choice"] == '2':
+        if data[str(user_id)]["loc1"] == '2':
+            if data[str(user_id)]["loc2"] == '2':
+                if data[str(user_id)]["loc3"] == '1':
+                    if data[str(user_id)]["loc4"] == '1':
+                        bot.send_message(user_id,
+                                         'Вы повисли, ты держался очень долго, но ведь на тебе еще 20кг снаряги и 70кг мужика.\n ты проиграл "выбор"')
+
+
 
 bot.infinity_polling()
