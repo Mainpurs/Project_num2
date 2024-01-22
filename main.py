@@ -180,7 +180,7 @@ def loc3(message):
 
         elif data[str(user_id)]["loc1"] == '2':
             if data[str(user_id)]["loc2"] == '1':
-                photo = open('путь_к_фото', 'rb')
+                photo = open('pic/die.png', 'rb')
                 bot.send_photo(message.chat.id, photo)
                 msg = bot.send_message(user_id,
                                        'Наступил вечер, никто так и не пришел. Кроме тех волков\nТы проиграл "запах страха"')
